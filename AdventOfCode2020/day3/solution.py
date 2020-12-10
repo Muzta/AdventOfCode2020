@@ -7,9 +7,9 @@ file = "input.txt"
 
 def movesSlope(lines, right, down):
     trees = 0
-    squares = len(lines[0])
+    squares = len(lines[0]) #    number of squares in a line
     for i in range(0, len(lines), down):
-        step = int((right * i/down) % squares)
+        step = int((right * i/down) % squares)  #    position of the line to be checked
         if (lines[i])[step] == "#":
             trees += 1
     return trees
