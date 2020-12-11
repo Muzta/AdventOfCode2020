@@ -10,7 +10,7 @@ def movesSlope(lines, right, down):
     squares = len(lines[0]) #    number of squares in a line
     for i in range(0, len(lines), down):
         step = int((right * i/down) % squares)  #    position of the line to be checked
-        if (lines[i])[step] == "#":
+        if (lines[i])[step] == "#": #    check if 'step' position in line 'i' is a tree
             trees += 1
     return trees
 
