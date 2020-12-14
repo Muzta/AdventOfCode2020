@@ -1,7 +1,7 @@
 '''
 Created on 8 dic. 2020
 
-@author: javyn
+@author: muzta
 '''
 targetNumber = 2020
 file = "input.txt"

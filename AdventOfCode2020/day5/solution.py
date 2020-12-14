@@ -1,7 +1,7 @@
 '''
 Created on 11 dic. 2020
 
-@author: javyn
+@author: muzta
 '''
 file = "input.txt"
 nRows = 128

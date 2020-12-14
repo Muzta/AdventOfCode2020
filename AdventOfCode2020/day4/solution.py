@@ -2,7 +2,7 @@ import re
 '''
 Created on 10 dic. 2020
 
-@author: javyn
+@author: muzta
 '''
 file = "input.txt"
 

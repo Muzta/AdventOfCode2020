@@ -1,7 +1,7 @@
 '''
 Created on 9 dic. 2020
 
-@author: javyn
+@author: muzta
 '''
 file = "input.txt"
 
