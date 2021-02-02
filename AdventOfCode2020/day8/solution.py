@@ -15,38 +15,36 @@ def iterateInstructions(index, instructions, accumulator, listIndex):
     elif action == "nop" : return iterateInstructions(index + 1, instructions, accumulator, listIndex)
     elif action == "jmp" : return iterateInstructions(index + number, instructions, accumulator, listIndex)
 
-
-def switch(value):
-    return "nop" if value == "jmp" else "jmp"
-
-def findInstructionToChange(index, instructions, accumulator, listIndex, accIndexes):
+#Same function but with some changes
+def iterateInstructionsTwo(index, instructions, accumulator, listIndex):
     ins = instructions[index]   # current instruction
     action = ins.split(" ")[0]  # kind of action
     number = int(ins.split(" ")[1])  # value of action
-    if index == len(instructions) : return accumulator
+    lastAcc = number if "acc" in action else 0  # if the last instruction is acc, we have to sum it
+    if index == (len(instructions) - 1) : return accumulator + lastAcc  # if the index is in the last position, it finishes
     
-    if index in listIndex : 
-        nAccIndexes = len(accIndexes)   # number of accumulator instruction indexes since the last nop/jmp
-        listIndex = listIndex[:-nAccIndexes]
-        for x in accIndexes:
-            accumulator -= int(instructions[x].split()[1])
-        backIndex = listIndex[len(listIndex) - 1]   # index of the last nop/jmp instruction
-        if "nop" in instructions[backIndex] : instructions[backIndex].replace("nop", "jmp")
-        else : instructions[backIndex].replace("jmp", "nop")
+    if index not in listIndex:
+        listIndex.append(index)
+        if action == "acc" : return iterateInstructionsTwo(index + 1, instructions, accumulator + number, listIndex)
+        elif action == "nop" : return iterateInstructionsTwo(index + 1, instructions, accumulator, listIndex)
+        elif action == "jmp" : return iterateInstructionsTwo(index + number, instructions, accumulator, listIndex)
         
-        return findInstructionToChange(backIndex, instructions, accumulator, listIndex, [])   # if it has already passed by the index, return the acumulator
-    
-    listIndex.append(index)
-    
-    if action == "acc" : 
-        accIndexes.append(index)
-        return findInstructionToChange(index + 1, instructions, accumulator + number, listIndex, accIndexes)
-    
-    elif action == "nop" : return findInstructionToChange(index + 1, instructions, accumulator, listIndex, accIndexes)
-    
-    elif action == "jmp" : return findInstructionToChange(index + number, instructions, accumulator, listIndex, accIndexes)
-    
+def switch(value):
+    if "jmp" in value:
+        value = value.replace("jmp", "nop")
+    else:
+        value = value.replace("nop", "jmp")
+    return value
 
+def findInstructionToChange(instructions):
+    for i in range(len(instructions)):
+        if ("nop" in instructions[i] or "jmp" in instructions[i]) and "nop +0" not in instructions[i]:
+            instructions[i] = switch(instructions[i])
+            acc = iterateInstructionsTwo(0, instructions, 0, [])
+            if acc is not None: return acc
+            else: instructions[i] = switch(instructions[i])
+    
+    
 with open(file) as doc:
     instructions = doc.readlines()
 instructions = [x.strip() for x in instructions]
@@ -56,9 +54,6 @@ acc = iterateInstructions(0, instructions, 0, [])
 print("The value of the accumulator before the second loop start is " + str(acc))
 
 
-l = [1, 2, 3, 4, 5]
-print(l)
-print(l[:-2])
 # Part two
-# acc2 = findInstructionToChange(0, instructions, 0, [], [])
-# print("The second excercise is " + str(acc2))
+acc2 = findInstructionToChange(instructions)
+print("The accumulator after the program terminates is " + str(acc2))
