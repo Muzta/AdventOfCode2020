@@ -1,7 +1,7 @@
 '''
 Created on 7 feb. 2021
 
-@author: javyn
+@author: muzta
 '''
 import pathlib
 
