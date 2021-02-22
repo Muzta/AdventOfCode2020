@@ -26,17 +26,11 @@ def partOne(index, coordinates, facing):
         rotations = int(value/90)  # number of rotations of 90º in that direction
         if rotations == 2: return partOne(nIndex, coordinates, [x * (-1) for x in facing]) # it rotates 180º
 
-        elif action == "L": # vector if it rotates 90º to the left
-            if facing[0] != 0: rotate = [x * facing[0] for x in [-1, 1]] # it is in x axis
-            else: rotate = [x * facing[1] for x in [-1, -1]]   # it is in y axis
+        if action == "L": nFacing = [- facing[1], facing[0]]
+        elif action == "R": nFacing = [facing[1], - facing[0]]
 
-        elif action == "R": # vector if it rotates 90º to the right
-            if facing[0] != 0: rotate = [x * facing[0] for x in [-1, -1]] # is is in x axis
-            else: rotate = [x * facing[1] for x in [1, -1]] # is is in y axis
-
-        if rotations == 1: return partOne(nIndex, coordinates, [facing[0] + rotate[0], facing[1] + rotate[1]])
-        else: return partOne(nIndex, coordinates, [- (facing[0] + rotate[0]), - (facing[1] + rotate[1])])    # rotation of 270º is the negative of 90º
-
+        if rotations == 3: nFacing = [x * (-1) for x in nFacing]    # rotation of 270º is the negative of 90º
+        return partOne(nIndex, coordinates, nFacing)
 
 with open(file) as doc:
     lines = doc.readlines()
